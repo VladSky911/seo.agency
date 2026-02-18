@@ -1,1 +1,1024 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LocalSEOPro | Dominate Local Search</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', "sans-serif"],
+            },
+            colors: {
+              dark: {
+                bg: "#0B0F19", // Deep black/blue
+                card: "#111827", // Dark gray for cards
+                border: "#1F2937", // Borders
+              },
+              brand: {
+                400: "#60A5FA", // Blue 400
+                500: "#3B82F6", // Blue 500
+                600: "#2563EB", // Blue 600
+                glow: "rgba(59, 130, 246, 0.5)", // Glow color
+              },
+            },
+            backgroundImage: {
+              "grid-pattern":
+                "linear-gradient(to right, #1f2937 1px, transparent 1px), linear-gradient(to bottom, #1f2937 1px, transparent 1px)",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        background-color: #0b0f19;
+        color: #f3f4f6;
+      }
 
+      /* Glassmorphism for Nav */
+      .glass-nav {
+        background: rgba(11, 15, 25, 0.7);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .nav-scrolled {
+        background: rgba(11, 15, 25, 0.95);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+      }
+
+      /* Card Hover Effects */
+      .card-hover {
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .card-hover:hover {
+        border-color: rgba(59, 130, 246, 0.5);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 40px -10px rgba(59, 130, 246, 0.15);
+      }
+
+      /* Process Timeline Connector Line (Desktop) */
+      .process-line-desktop {
+        position: absolute;
+        top: 24px; /* Aligns with center of the circle */
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, #3b82f6 0%, #1f2937 100%);
+        z-index: 0;
+      }
+
+      /* Process Timeline Connector Line (Mobile) */
+      .process-line-mobile {
+        position: absolute;
+        left: 24px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(180deg, #3b82f6 0%, #1f2937 100%);
+        z-index: 0;
+      }
+
+      /* Background Grid */
+      .bg-grid {
+        background-size: 40px 40px;
+        mask-image: linear-gradient(
+          to bottom,
+          transparent,
+          10%,
+          black,
+          90%,
+          transparent
+        );
+      }
+    </style>
+  </head>
+  <body
+    class="antialiased overflow-x-hidden selection:bg-brand-500 selection:text-white"
+  >
+    <!-- Background Grid Effect -->
+    <div
+      class="fixed inset-0 bg-grid-pattern opacity-20 pointer-events-none z-[-1]"
+    ></div>
+
+    <!-- Notification Toast -->
+    <div
+      id="toast"
+      class="fixed top-24 right-6 z-[60] transform translate-x-full transition-transform duration-300"
+    >
+      <div
+        class="bg-brand-600 text-white px-6 py-4 rounded-xl shadow-2xl shadow-brand-500/20 flex items-center gap-3 border border-brand-400"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 13l4 4L19 7"
+          ></path>
+        </svg>
+        <div>
+          <h4 class="font-bold">Audit Requested!</h4>
+          <p class="text-sm opacity-90">Check your email shortly.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav
+      id="navbar"
+      class="glass-nav fixed w-full z-50 top-0 transition-all duration-300"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex justify-between items-center"
+      >
+        <a
+          href="#"
+          class="text-2xl font-extrabold tracking-tight text-white flex items-center gap-2"
+        >
+          <div
+            class="w-8 h-8 bg-gradient-to-tr from-brand-400 to-purple-500 rounded-lg flex items-center justify-center text-white shadow-lg shadow-brand-500/20"
+          >
+            L
+          </div>
+          LocalSEOPro<span class="text-brand-400">.</span>
+        </a>
+
+        <div class="hidden md:flex space-x-10 font-semibold text-slate-400">
+          <a href="#services" class="hover:text-white transition">Services</a>
+          <a href="#process" class="hover:text-white transition">Our Process</a>
+          <a href="#results" class="hover:text-white transition">Results</a>
+          <a href="#faq" class="hover:text-white transition">FAQ</a>
+        </div>
+
+        <div class="hidden md:block">
+          <button
+            onclick="scrollToAudit()"
+            class="bg-white text-dark-bg px-7 py-3 rounded-full font-bold hover:bg-brand-50 hover:scale-105 transition active:scale-95 shadow-lg shadow-white/10"
+          >
+            Free Audit →
+          </button>
+        </div>
+
+        <button
+          id="mobile-menu-btn"
+          class="md:hidden text-slate-200 focus:outline-none"
+        >
+          <svg
+            class="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            ></path>
+          </svg>
+        </button>
+      </div>
+
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden bg-dark-card border-t border-dark-border absolute w-full shadow-xl"
+      >
+        <div class="px-4 pt-2 pb-6 space-y-2 font-medium">
+          <a
+            href="#services"
+            class="block px-3 py-3 rounded-lg hover:bg-white/5 text-slate-300"
+            >Services</a
+          >
+          <a
+            href="#process"
+            class="block px-3 py-3 rounded-lg hover:bg-white/5 text-slate-300"
+            >Our Process</a
+          >
+          <a
+            href="#results"
+            class="block px-3 py-3 rounded-lg hover:bg-white/5 text-slate-300"
+            >Results</a
+          >
+          <a
+            href="#audit"
+            class="block mt-4 text-center bg-brand-600 text-white px-5 py-3 rounded-xl font-bold"
+            >Get Free Audit</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section
+      class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 px-6 overflow-hidden"
+    >
+      <!-- Glow Blobs -->
+      <div
+        class="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-600/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none"
+      ></div>
+      <div
+        class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none"
+      ></div>
+
+      <div
+        class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10"
+      >
+        <div class="order-2 lg:order-1">
+          <div
+            class="inline-flex items-center space-x-2 bg-brand-900/30 border border-brand-500/30 text-brand-300 px-4 py-2 rounded-full text-sm font-bold mb-6"
+          >
+            <span class="relative flex h-2 w-2">
+              <span
+                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"
+              ></span>
+              <span
+                class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"
+              ></span>
+            </span>
+            <span>Dominate Local Search in 2024</span>
+          </div>
+          <h1
+            class="text-5xl lg:text-7xl font-extrabold text-white leading-[1.1] mb-8"
+          >
+            Turn Search Into <br /><span
+              class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-purple-400"
+              >Revenue.</span
+            >
+          </h1>
+          <p
+            class="text-lg lg:text-xl text-slate-400 mb-10 leading-relaxed max-w-lg"
+          >
+            We build authority for US-based Home Services, Medical, and Legal
+            firms. No vanity metrics. Just real customers.
+          </p>
+          <div class="flex flex-col sm:flex-row items-center gap-6">
+            <button
+              onclick="scrollToAudit()"
+              class="w-full sm:w-auto bg-brand-600 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:bg-brand-500 hover:shadow-[0_0_30px_-5px_rgba(37,99,235,0.5)] transition-all transform hover:-translate-y-1 border border-brand-500"
+            >
+              Start Your Growth
+            </button>
+            <div class="flex items-center gap-4">
+              <div class="flex -space-x-3">
+                <img
+                  class="w-12 h-12 rounded-full border-2 border-dark-bg object-cover grayscale opacity-80"
+                  src="https://picsum.photos/seed/ceo1/100/100"
+                  alt="Client"
+                />
+                <img
+                  class="w-12 h-12 rounded-full border-2 border-dark-bg object-cover grayscale opacity-80"
+                  src="https://picsum.photos/seed/ceo2/100/100"
+                  alt="Client"
+                />
+                <img
+                  class="w-12 h-12 rounded-full border-2 border-dark-bg object-cover grayscale opacity-80"
+                  src="https://picsum.photos/seed/ceo3/100/100"
+                  alt="Client"
+                />
+              </div>
+              <div class="text-sm font-semibold text-slate-300">
+                <div class="flex items-center text-yellow-400 text-xs mb-0.5">
+                  ★★★★★ <span class="text-slate-500 ml-1">(4.9/5)</span>
+                </div>
+                <span class="text-slate-500">Trusted by 150+ US Firms</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Visual (Abstract Dashboard) -->
+        <div
+          class="order-1 lg:order-2 relative flex justify-center lg:justify-end"
+        >
+          <div class="relative w-full max-w-lg aspect-square">
+            <div
+              class="absolute inset-0 bg-gradient-to-tr from-brand-500/20 to-purple-500/20 rounded-full blur-3xl animate-pulse"
+            ></div>
+
+            <div
+              class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10/12 bg-dark-card/80 backdrop-blur-md p-3 rounded-[40px] shadow-2xl border border-white/10 z-10"
+            >
+              <div
+                class="bg-dark-bg rounded-[32px] overflow-hidden relative h-64 flex items-center justify-center border border-white/5"
+              >
+                <!-- CSS Map Illustration -->
+                <div class="absolute inset-0 bg-grid-pattern opacity-20"></div>
+                <!-- Map Pin -->
+                <div class="relative z-10 group cursor-pointer">
+                  <div
+                    class="w-16 h-16 bg-gradient-to-br from-brand-500 to-purple-600 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.6)] text-white animate-bounce border-2 border-white/20"
+                  >
+                    <svg
+                      class="w-8 h-8"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                      ></path>
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating Stat Card -->
+            <div
+              class="absolute bottom-10 -left-4 lg:left-0 bg-dark-card border border-dark-border p-5 rounded-2xl shadow-xl z-20 animate-float"
+            >
+              <div class="flex items-center gap-4">
+                <div
+                  class="w-10 h-10 bg-green-500/10 rounded-full flex items-center justify-center text-green-400"
+                >
+                  <svg
+                    class="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                    ></path>
+                  </svg>
+                </div>
+                <div>
+                  <p
+                    class="text-xs text-slate-500 font-bold uppercase tracking-wider"
+                  >
+                    Monthly Leads
+                  </p>
+                  <p class="text-2xl font-extrabold text-white">+458%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 px-6 relative">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <h2 class="text-4xl font-extrabold text-white mb-4">
+            Core Expertise
+          </h2>
+          <p class="text-slate-400 text-lg">
+            Hyper-focused local optimization for real world results.
+          </p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6 auto-rows-[300px]">
+          <!-- Card 1 -->
+          <div
+            class="card-hover bg-dark-card p-10 rounded-[32px] md:col-span-2 flex flex-col justify-between"
+          >
+            <div>
+              <div
+                class="w-14 h-14 bg-brand-900/50 text-brand-400 rounded-2xl flex items-center justify-center mb-6 text-2xl border border-brand-500/20"
+              >
+                <svg
+                  class="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 00-.553-.894L15 7m0 13V7"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold mb-4 text-white">
+                Google Business Profile Mastery
+              </h3>
+            </div>
+            <p class="text-slate-400 text-lg">
+              We optimize every signal—from photos to reviews—to ensure you sit
+              in the "Local Pack" Top 3 for profitable keywords.
+            </p>
+          </div>
+          <!-- Card 2 -->
+          <div
+            class="card-hover bg-dark-card p-10 rounded-[32px] border border-brand-500/30 flex flex-col justify-center relative overflow-hidden group"
+          >
+            <div
+              class="absolute inset-0 bg-brand-500/5 group-hover:bg-brand-500/10 transition"
+            ></div>
+            <div
+              class="w-14 h-14 bg-brand-600 text-white rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-lg shadow-brand-500/20"
+            >
+              <svg
+                class="w-8 h-8"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold mb-4 text-white">Local Citations</h3>
+            <p class="text-slate-400">
+              Consistent NAP data across 100+ US directories to build absolute
+              trust.
+            </p>
+          </div>
+          <!-- Card 3 -->
+          <div
+            class="card-hover bg-dark-card p-10 rounded-[32px] flex flex-col justify-center"
+          >
+            <div
+              class="w-14 h-14 bg-slate-800 text-slate-300 rounded-2xl flex items-center justify-center mb-6 text-2xl"
+            >
+              <svg
+                class="w-8 h-8"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold mb-4 text-white">Niche Strategies</h3>
+            <p class="text-slate-400 text-md">
+              Medical HIPAA compliance, Legal ethics, Home Services urgency.
+            </p>
+          </div>
+          <!-- Card 4 -->
+          <div
+            class="card-hover bg-dark-card p-10 rounded-[32px] md:col-span-2 border border-white/5 flex items-center justify-between"
+          >
+            <div>
+              <div
+                class="w-14 h-14 bg-green-500/10 text-green-400 rounded-2xl flex items-center justify-center mb-6 text-2xl"
+              >
+                <svg
+                  class="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold mb-4 text-white">
+                Lead-First Reporting
+              </h3>
+              <p class="text-slate-400 text-lg">
+                You'll see exactly how many calls, direction requests, and
+                website visits we generated.
+              </p>
+            </div>
+            <div class="hidden sm:block">
+              <!-- Mini Chart Graphic -->
+              <div class="flex items-end gap-1 h-16">
+                <div class="w-3 bg-slate-700 h-8 rounded-t"></div>
+                <div class="w-3 bg-slate-700 h-12 rounded-t"></div>
+                <div class="w-3 bg-slate-700 h-10 rounded-t"></div>
+                <div class="w-3 bg-slate-700 h-14 rounded-t"></div>
+                <div
+                  class="w-3 bg-brand-500 h-16 rounded-t relative shadow-[0_0_10px_rgba(59,130,246,0.8)]"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS SECTION (REDESIGNED) -->
+    <section
+      id="process"
+      class="py-24 px-6 bg-dark-card border-y border-white/5 relative"
+    >
+      <div class="max-w-7xl mx-auto">
+        <div class="mb-20">
+          <h2 class="text-4xl font-extrabold text-white mb-4 text-center">
+            Our Proven Process
+          </h2>
+          <p class="text-slate-400 text-lg text-center max-w-2xl mx-auto">
+            A systematic approach to dominate your local market.
+          </p>
+        </div>
+
+        <!-- Desktop Timeline -->
+        <div class="hidden md:block relative">
+          <!-- The Connector Line -->
+          <div class="process-line-desktop"></div>
+
+          <div class="grid grid-cols-4 gap-0 relative z-10">
+            <!-- Step 1 -->
+            <div class="flex flex-col items-center group text-center px-4">
+              <div
+                class="w-12 h-12 bg-dark-card border-4 border-brand-500 rounded-full flex items-center justify-center font-bold text-xl text-white shadow-[0_0_20px_rgba(59,130,246,0.5)] mb-6 transition-transform group-hover:scale-110"
+              >
+                1
+              </div>
+              <h3
+                class="text-xl font-bold mb-2 text-slate-200 group-hover:text-brand-400 transition"
+              >
+                Deep Audit
+              </h3>
+              <p class="text-slate-500 text-sm">
+                We analyze your footprint and competitors.
+              </p>
+            </div>
+            <!-- Step 2 -->
+            <div class="flex flex-col items-center group text-center px-4">
+              <div
+                class="w-12 h-12 bg-dark-card border-4 border-slate-700 rounded-full flex items-center justify-center font-bold text-xl text-slate-300 mb-6 transition-all group-hover:border-brand-500 group-hover:text-white group-hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]"
+              >
+                2
+              </div>
+              <h3
+                class="text-xl font-bold mb-2 text-slate-200 group-hover:text-brand-400 transition"
+              >
+                Optimization
+              </h3>
+              <p class="text-slate-500 text-sm">
+                Fixes, GBP optimization, and citations.
+              </p>
+            </div>
+            <!-- Step 3 -->
+            <div class="flex flex-col items-center group text-center px-4">
+              <div
+                class="w-12 h-12 bg-dark-card border-4 border-slate-700 rounded-full flex items-center justify-center font-bold text-xl text-slate-300 mb-6 transition-all group-hover:border-brand-500 group-hover:text-white group-hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]"
+              >
+                3
+              </div>
+              <h3
+                class="text-xl font-bold mb-2 text-slate-200 group-hover:text-brand-400 transition"
+              >
+                Authority
+              </h3>
+              <p class="text-slate-500 text-sm">
+                Building links and generating reviews.
+              </p>
+            </div>
+            <!-- Step 4 -->
+            <div class="flex flex-col items-center group text-center px-4">
+              <div
+                class="w-12 h-12 bg-gradient-to-br from-brand-500 to-purple-600 rounded-full flex items-center justify-center font-bold text-xl text-white shadow-lg mb-6 transition-transform group-hover:scale-110"
+              >
+                4
+              </div>
+              <h3 class="text-xl font-bold mb-2 text-brand-400">Scale</h3>
+              <p class="text-slate-500 text-sm">
+                Watch your revenue grow sustainably.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Timeline -->
+        <div class="md:hidden relative max-w-sm mx-auto pl-6">
+          <!-- The Connector Line -->
+          <div class="process-line-mobile"></div>
+
+          <div class="space-y-12 relative z-10">
+            <!-- Mobile Step 1 -->
+            <div class="relative group">
+              <div
+                class="absolute -left-[38px] top-0 w-10 h-10 bg-dark-card border-4 border-brand-500 rounded-full flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+              >
+                1
+              </div>
+              <h3 class="text-lg font-bold mb-2 text-white">Deep Audit</h3>
+              <p class="text-slate-500 text-sm">
+                We analyze your current footprint and competitors to find the
+                "low hanging fruit".
+              </p>
+            </div>
+            <!-- Mobile Step 2 -->
+            <div class="relative group">
+              <div
+                class="absolute -left-[38px] top-0 w-10 h-10 bg-dark-card border-4 border-slate-700 rounded-full flex items-center justify-center font-bold text-slate-300 group-hover:border-brand-500 group-hover:text-white transition-colors"
+              >
+                2
+              </div>
+              <h3 class="text-lg font-bold mb-2 text-white">Optimization</h3>
+              <p class="text-slate-500 text-sm">
+                On-page fixes, GBP optimization, and citation cleanup to align
+                the signals.
+              </p>
+            </div>
+            <!-- Mobile Step 3 -->
+            <div class="relative group">
+              <div
+                class="absolute -left-[38px] top-0 w-10 h-10 bg-dark-card border-4 border-slate-700 rounded-full flex items-center justify-center font-bold text-slate-300 group-hover:border-brand-500 group-hover:text-white transition-colors"
+              >
+                3
+              </div>
+              <h3 class="text-lg font-bold mb-2 text-white">Authority</h3>
+              <p class="text-slate-500 text-sm">
+                Building local links and generating genuine reviews to boost
+                trust.
+              </p>
+            </div>
+            <!-- Mobile Step 4 -->
+            <div class="relative group">
+              <div
+                class="absolute -left-[38px] top-0 w-10 h-10 bg-gradient-to-br from-brand-500 to-purple-600 rounded-full flex items-center justify-center font-bold text-white shadow-lg"
+              >
+                4
+              </div>
+              <h3 class="text-lg font-bold mb-2 text-brand-400">Scale</h3>
+              <p class="text-slate-500 text-sm">
+                Sit back, answer the phone, and watch your revenue grow.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results" class="py-24 px-6">
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-4xl font-extrabold text-white mb-12 text-center">
+          Recent Results
+        </h2>
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- Testimonial 1 -->
+          <div
+            class="p-8 rounded-3xl bg-dark-card border border-dark-border hover:border-brand-500/50 transition group"
+          >
+            <div class="flex items-center gap-4 mb-6">
+              <img
+                src="https://picsum.photos/seed/law/60/60"
+                class="rounded-full w-14 h-14 object-cover border border-slate-700 grayscale group-hover:grayscale-0 transition"
+                alt="Lawyer"
+              />
+              <div>
+                <p class="font-bold text-white">James Carter</p>
+                <p class="text-sm text-slate-500">Carter Law Firm</p>
+              </div>
+            </div>
+            <p class="text-slate-400 mb-6">
+              "Within 3 months, we went from page 3 to the top 3 for 'Personal
+              Injury Attorney'. The phone hasn't stopped ringing."
+            </p>
+            <div class="text-green-400 font-bold flex items-center gap-2">
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                ></path>
+              </svg>
+              210% Increase in Calls
+            </div>
+          </div>
+          <!-- Testimonial 2 -->
+          <div
+            class="p-8 rounded-3xl bg-dark-card border border-dark-border hover:border-brand-500/50 transition group"
+          >
+            <div class="flex items-center gap-4 mb-6">
+              <img
+                src="https://picsum.photos/seed/dent/60/60"
+                class="rounded-full w-14 h-14 object-cover border border-slate-700 grayscale group-hover:grayscale-0 transition"
+                alt="Dentist"
+              />
+              <div>
+                <p class="font-bold text-white">Dr. Sarah Lee</p>
+                <p class="text-sm text-slate-500">Bright Smile Dental</p>
+              </div>
+            </div>
+            <p class="text-slate-400 mb-6">
+              "LocalSEOPro understood that we needed HIPAA-compliant strategies.
+              They filled our appointment book completely."
+            </p>
+            <div class="text-green-400 font-bold flex items-center gap-2">
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                ></path>
+              </svg>
+              95% Capacity Reached
+            </div>
+          </div>
+          <!-- Testimonial 3 -->
+          <div
+            class="p-8 rounded-3xl bg-dark-card border border-dark-border hover:border-brand-500/50 transition group"
+          >
+            <div class="flex items-center gap-4 mb-6">
+              <img
+                src="https://picsum.photos/seed/hvac/60/60"
+                class="rounded-full w-14 h-14 object-cover border border-slate-700 grayscale group-hover:grayscale-0 transition"
+                alt="HVAC"
+              />
+              <div>
+                <p class="font-bold text-white">Mike Ross</p>
+                <p class="text-sm text-slate-500">Ross HVAC Services</p>
+              </div>
+            </div>
+            <p class="text-slate-400 mb-6">
+              "Finally an SEO agency that focuses on ROI. My map leads are
+              through the roof."
+            </p>
+            <div class="text-green-400 font-bold flex items-center gap-2">
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                ></path>
+              </svg>
+              $50k Revenue Added
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="audit" class="py-20 px-6">
+      <div
+        class="max-w-5xl mx-auto bg-gradient-to-br from-slate-900 to-black border border-white/10 rounded-[50px] p-8 md:p-16 text-center text-white relative overflow-hidden"
+      >
+        <!-- Background Elements -->
+        <div
+          class="absolute top-0 left-0 w-64 h-64 bg-brand-600 rounded-full mix-blend-overlay filter blur-[100px] opacity-20 -translate-x-1/2 -translate-y-1/2"
+        ></div>
+        <div
+          class="absolute bottom-0 right-0 w-64 h-64 bg-purple-600 rounded-full mix-blend-overlay filter blur-[100px] opacity-20 translate-x-1/2 translate-y-1/2"
+        ></div>
+
+        <div class="relative z-10">
+          <h2 class="text-4xl md:text-5xl font-extrabold mb-6">
+            Ready to Own Your Market?
+          </h2>
+          <p class="text-xl text-slate-400 mb-10 max-w-2xl mx-auto">
+            No long-term contracts. Just pure growth for your US-based business.
+          </p>
+
+          <form
+            id="audit-form"
+            class="flex flex-col md:flex-row justify-center items-center gap-4 max-w-xl mx-auto"
+          >
+            <input
+              type="url"
+              placeholder="www.yourwebsite.com"
+              required
+              class="px-6 py-4 rounded-2xl w-full bg-dark-card border border-dark-border text-white font-medium focus:ring-4 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition placeholder-slate-600"
+            />
+            <button
+              type="submit"
+              class="bg-gradient-to-r from-brand-600 to-purple-600 hover:from-brand-500 hover:to-purple-500 text-white px-8 py-4 rounded-2xl font-bold text-lg w-full md:w-auto transition-all shadow-lg hover:shadow-brand-500/25 whitespace-nowrap"
+            >
+              Get Free Audit
+            </button>
+          </form>
+          <p class="mt-4 text-sm text-slate-500">
+            No credit card required for the audit.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-24 px-6">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-3xl font-extrabold text-white mb-10 text-center">
+          Frequently Asked Questions
+        </h2>
+        <div class="space-y-4">
+          <details
+            class="group bg-dark-card p-6 rounded-2xl cursor-pointer border border-dark-border open:border-brand-500/50 transition-all"
+          >
+            <summary
+              class="flex justify-between items-center font-semibold text-lg list-none text-slate-200"
+            >
+              How long does it take to see results?
+              <span class="transition group-open:rotate-180 text-slate-500">
+                <svg
+                  fill="none"
+                  height="24"
+                  shape-rendering="geometricPrecision"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="24"
+                >
+                  <path d="M6 9l6 6 6-6"></path>
+                </svg>
+              </span>
+            </summary>
+            <p class="text-slate-400 mt-4 leading-relaxed">
+              Local SEO typically shows initial results in 30-60 days, with
+              significant ranking improvements and lead growth occurring around
+              the 3-month mark.
+            </p>
+          </details>
+          <details
+            class="group bg-dark-card p-6 rounded-2xl cursor-pointer border border-dark-border open:border-brand-500/50 transition-all"
+          >
+            <summary
+              class="flex justify-between items-center font-semibold text-lg list-none text-slate-200"
+            >
+              Do you work with small businesses?
+              <span class="transition group-open:rotate-180 text-slate-500">
+                <svg
+                  fill="none"
+                  height="24"
+                  shape-rendering="geometricPrecision"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="24"
+                >
+                  <path d="M6 9l6 6 6-6"></path>
+                </svg>
+              </span>
+            </summary>
+            <p class="text-slate-400 mt-4 leading-relaxed">
+              Yes! We specialize in US-based home service providers (plumbers,
+              electricians, dentists, lawyers) looking to grow their local
+              footprint.
+            </p>
+          </details>
+          <details
+            class="group bg-dark-card p-6 rounded-2xl cursor-pointer border border-dark-border open:border-brand-500/50 transition-all"
+          >
+            <summary
+              class="flex justify-between items-center font-semibold text-lg list-none text-slate-200"
+            >
+              Are there long-term contracts?
+              <span class="transition group-open:rotate-180 text-slate-500">
+                <svg
+                  fill="none"
+                  height="24"
+                  shape-rendering="geometricPrecision"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="24"
+                >
+                  <path d="M6 9l6 6 6-6"></path>
+                </svg>
+              </span>
+            </summary>
+            <p class="text-slate-400 mt-4 leading-relaxed">
+              No. We earn your business every month. Our agreements are
+              month-to-month because we believe in our results.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 pt-16 pb-8 bg-black">
+      <div class="max-w-7xl mx-auto px-6">
+        <div
+          class="flex flex-col md:flex-row justify-between items-center mb-8"
+        >
+          <div class="mb-4 md:mb-0">
+            <span class="text-2xl font-extrabold text-white tracking-tight"
+              >LocalSEOPro.</span
+            >
+          </div>
+          <div class="flex space-x-6 text-slate-500">
+            <a href="#" class="hover:text-brand-400 transition"
+              >Privacy Policy</a
+            >
+            <a href="#" class="hover:text-brand-400 transition"
+              >Terms of Service</a
+            >
+            <a href="#" class="hover:text-brand-400 transition">Contact</a>
+          </div>
+        </div>
+        <div class="text-center text-slate-600 text-sm">
+          <p>© 2026 LocalSEOPro.com. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      // Mobile Menu
+      const btn = document.getElementById("mobile-menu-btn");
+      const menu = document.getElementById("mobile-menu");
+      const links = menu.querySelectorAll("a");
+
+      btn.addEventListener("click", () => {
+        menu.classList.toggle("hidden");
+      });
+
+      links.forEach((link) => {
+        link.addEventListener("click", () => {
+          menu.classList.add("hidden");
+        });
+      });
+
+      // Sticky Navbar
+      const navbar = document.getElementById("navbar");
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 20) {
+          navbar.classList.add("nav-scrolled");
+        } else {
+          navbar.classList.remove("nav-scrolled");
+        }
+      });
+
+      // Form Handling
+      const form = document.getElementById("audit-form");
+      const toast = document.getElementById("toast");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const btn = form.querySelector("button");
+        const originalText = btn.innerText;
+
+        btn.innerText = "Analyzing...";
+        btn.classList.add("opacity-75", "cursor-not-allowed");
+
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.classList.remove("opacity-75", "cursor-not-allowed");
+          form.reset();
+
+          toast.classList.remove("translate-x-full");
+          setTimeout(() => {
+            toast.classList.add("translate-x-full");
+          }, 4000);
+        }, 1500);
+      });
+
+      function scrollToAudit() {
+        document.getElementById("audit").scrollIntoView({ behavior: "smooth" });
+      }
+    </script>
+  </body>
+</html>
