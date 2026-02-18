@@ -19,20 +19,19 @@
             },
             colors: {
               dark: {
-                bg: "#0B0F19", // Deep black/blue
-                card: "#111827", // Dark gray for cards
-                border: "#1F2937", // Borders
+                bg: "#05050A", // Deepest black
+                card: "#0F1115", // Dark gray
+                border: "#1E2130", // Subtle borders
               },
               brand: {
-                400: "#60A5FA", // Blue 400
-                500: "#3B82F6", // Blue 500
-                600: "#2563EB", // Blue 600
-                glow: "rgba(59, 130, 246, 0.5)", // Glow color
+                400: "#60A5FA", // Blue
+                500: "#3B82F6", // Blue
+                600: "#2563EB",
               },
             },
             backgroundImage: {
               "grid-pattern":
-                "linear-gradient(to right, #1f2937 1px, transparent 1px), linear-gradient(to bottom, #1f2937 1px, transparent 1px)",
+                "linear-gradient(to right, #1E2130 1px, transparent 1px), linear-gradient(to bottom, #1E2130 1px, transparent 1px)",
             },
           },
         },
@@ -40,81 +39,209 @@
     </script>
     <style>
       body {
-        background-color: #0b0f19;
-        color: #f3f4f6;
+        background-color: #05050a;
+        color: #e2e8f0;
       }
 
-      /* Glassmorphism for Nav */
+      /* Glassmorphism Nav */
       .glass-nav {
-        background: rgba(11, 15, 25, 0.7);
-        backdrop-filter: blur(12px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        background: rgba(5, 5, 10, 0.85);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
       }
 
       .nav-scrolled {
-        background: rgba(11, 15, 25, 0.95);
+        background: rgba(5, 5, 10, 0.98);
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
       }
 
-      /* Card Hover Effects */
-      .card-hover {
-        transition: all 0.3s ease;
+      /* Card Styles */
+      .feature-card {
+        background: rgba(15, 17, 21, 0.6);
         border: 1px solid rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
       }
-      .card-hover:hover {
-        border-color: rgba(59, 130, 246, 0.5);
-        transform: translateY(-5px);
-        box-shadow: 0 10px 40px -10px rgba(59, 130, 246, 0.15);
+      .feature-card:hover {
+        border-color: rgba(59, 130, 246, 0.3);
+        transform: translateY(-4px);
+        background: rgba(15, 17, 21, 0.9);
       }
 
-      /* Process Timeline Connector Line (Desktop) */
+      /* Timeline Lines */
       .process-line-desktop {
         position: absolute;
-        top: 24px; /* Aligns with center of the circle */
+        top: 24px;
         left: 0;
         width: 100%;
         height: 2px;
-        background: linear-gradient(90deg, #3b82f6 0%, #1f2937 100%);
+        background: linear-gradient(90deg, #3b82f6 0%, #1e2130 100%);
         z-index: 0;
       }
-
-      /* Process Timeline Connector Line (Mobile) */
       .process-line-mobile {
         position: absolute;
         left: 24px;
         top: 0;
         bottom: 0;
         width: 2px;
-        background: linear-gradient(180deg, #3b82f6 0%, #1f2937 100%);
+        background: linear-gradient(180deg, #3b82f6 0%, #1e2130 100%);
         z-index: 0;
       }
 
       /* Background Grid */
       .bg-grid {
-        background-size: 40px 40px;
+        background-size: 50px 50px;
         mask-image: linear-gradient(
           to bottom,
           transparent,
-          10%,
+          5%,
           black,
-          90%,
+          95%,
           transparent
         );
+      }
+
+      /* Modal Animation */
+      .modal-enter {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      .modal-enter-active {
+        opacity: 1;
+        transform: scale(1);
+        transition: all 0.2s ease-out;
+      }
+      .modal-exit {
+        opacity: 1;
+        transform: scale(1);
+      }
+      .modal-exit-active {
+        opacity: 0;
+        transform: scale(0.95);
+        transition: all 0.2s ease-in;
       }
     </style>
   </head>
   <body
     class="antialiased overflow-x-hidden selection:bg-brand-500 selection:text-white"
   >
-    <!-- Background Grid Effect -->
+    <!-- Background Grid -->
     <div
-      class="fixed inset-0 bg-grid-pattern opacity-20 pointer-events-none z-[-1]"
+      class="fixed inset-0 bg-grid-pattern opacity-10 pointer-events-none z-[-1]"
     ></div>
+
+    <!-- MODAL WINDOW (Hidden by default) -->
+    <div
+      id="modal-overlay"
+      class="fixed inset-0 z-[100] hidden"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
+      <!-- Backdrop -->
+      <div
+        class="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
+        onclick="closeModal()"
+      ></div>
+
+      <div class="fixed inset-0 z-10 overflow-y-auto">
+        <div
+          class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
+        >
+          <div
+            class="relative transform overflow-hidden rounded-2xl bg-dark-card border border-dark-border text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg p-8"
+          >
+            <!-- Header -->
+            <div class="flex justify-between items-start mb-6">
+              <div>
+                <h3 class="text-2xl font-bold text-white" id="modal-title">
+                  Get Free Audit
+                </h3>
+                <p class="text-sm text-slate-400 mt-1">
+                  Fill in 3 steps to start growth.
+                </p>
+              </div>
+              <button
+                onclick="closeModal()"
+                class="text-slate-400 hover:text-white transition"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Form with 3 Standard Points -->
+            <form id="modal-form" class="space-y-4">
+              <!-- Point 1 -->
+              <div>
+                <label class="block text-sm font-medium text-slate-400 mb-1"
+                  >Website URL</label
+                >
+                <input
+                  type="url"
+                  required
+                  placeholder="www.yourcompany.com"
+                  class="w-full bg-dark-bg border border-dark-border rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition"
+                />
+              </div>
+
+              <!-- Point 2 -->
+              <div>
+                <label class="block text-sm font-medium text-slate-400 mb-1"
+                  >Your Name</label
+                >
+                <input
+                  type="text"
+                  required
+                  placeholder="John Doe"
+                  class="w-full bg-dark-bg border border-dark-border rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition"
+                />
+              </div>
+
+              <!-- Point 3 -->
+              <div>
+                <label class="block text-sm font-medium text-slate-400 mb-1"
+                  >Phone Number</label
+                >
+                <input
+                  type="tel"
+                  required
+                  placeholder="+1 (555) 000-0000"
+                  class="w-full bg-dark-bg border border-dark-border rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition"
+                />
+              </div>
+
+              <button
+                type="submit"
+                class="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-4 rounded-xl mt-4 transition shadow-lg shadow-brand-500/25"
+              >
+                Get Audit Now
+              </button>
+            </form>
+
+            <p class="text-xs text-slate-500 mt-4 text-center">
+              No credit card required.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Notification Toast -->
     <div
       id="toast"
-      class="fixed top-24 right-6 z-[60] transform translate-x-full transition-transform duration-300"
+      class="fixed top-24 right-6 z-[110] transform translate-x-full transition-transform duration-300"
     >
       <div
         class="bg-brand-600 text-white px-6 py-4 rounded-xl shadow-2xl shadow-brand-500/20 flex items-center gap-3 border border-brand-400"
@@ -133,8 +260,8 @@
           ></path>
         </svg>
         <div>
-          <h4 class="font-bold">Audit Requested!</h4>
-          <p class="text-sm opacity-90">Check your email shortly.</p>
+          <h4 class="font-bold">Request Sent!</h4>
+          <p class="text-sm opacity-90">We'll call you shortly.</p>
         </div>
       </div>
     </div>
@@ -159,19 +286,27 @@
           LocalSEOPro<span class="text-brand-400">.</span>
         </a>
 
-        <div class="hidden md:flex space-x-10 font-semibold text-slate-400">
+        <!-- Minimal Desktop Menu -->
+        <div
+          class="hidden md:flex space-x-8 font-semibold text-sm text-slate-400"
+        >
           <a href="#services" class="hover:text-white transition">Services</a>
-          <a href="#process" class="hover:text-white transition">Our Process</a>
-          <a href="#results" class="hover:text-white transition">Results</a>
-          <a href="#faq" class="hover:text-white transition">FAQ</a>
+          <a href="#industries" class="hover:text-white transition"
+            >Industries</a
+          >
+          <a href="#pricing" class="hover:text-white transition">Pricing</a>
+          <a href="#how-it-works" class="hover:text-white transition"
+            >Process</a
+          >
         </div>
 
+        <!-- Clear CTA (Opens Modal) -->
         <div class="hidden md:block">
           <button
-            onclick="scrollToAudit()"
-            class="bg-white text-dark-bg px-7 py-3 rounded-full font-bold hover:bg-brand-50 hover:scale-105 transition active:scale-95 shadow-lg shadow-white/10"
+            onclick="openModal()"
+            class="bg-brand-600 text-white px-6 py-2.5 rounded-full font-bold hover:bg-brand-500 transition shadow-lg shadow-brand-500/20 text-sm border border-brand-400"
           >
-            Free Audit →
+            Get Free Audit
           </button>
         </div>
 
@@ -194,7 +329,6 @@
           </svg>
         </button>
       </div>
-
       <div
         id="mobile-menu"
         class="hidden md:hidden bg-dark-card border-t border-dark-border absolute w-full shadow-xl"
@@ -206,34 +340,36 @@
             >Services</a
           >
           <a
-            href="#process"
+            href="#industries"
             class="block px-3 py-3 rounded-lg hover:bg-white/5 text-slate-300"
-            >Our Process</a
+            >Industries</a
           >
           <a
-            href="#results"
+            href="#pricing"
             class="block px-3 py-3 rounded-lg hover:bg-white/5 text-slate-300"
-            >Results</a
+            >Pricing</a
           >
           <a
-            href="#audit"
-            class="block mt-4 text-center bg-brand-600 text-white px-5 py-3 rounded-xl font-bold"
-            >Get Free Audit</a
+            href="#how-it-works"
+            class="block px-3 py-3 rounded-lg hover:bg-white/5 text-slate-300"
+            >Process</a
           >
+          <button
+            onclick="openModal()"
+            class="block mt-4 w-full text-center bg-brand-600 text-white px-5 py-3 rounded-xl font-bold"
+          >
+            Get Free Audit
+          </button>
         </div>
       </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- 1. HERO SECTION -->
     <section
       class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 px-6 overflow-hidden"
     >
-      <!-- Glow Blobs -->
       <div
-        class="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-600/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none"
-      ></div>
-      <div
-        class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none"
+        class="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-600/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none"
       ></div>
 
       <div
@@ -241,7 +377,7 @@
       >
         <div class="order-2 lg:order-1">
           <div
-            class="inline-flex items-center space-x-2 bg-brand-900/30 border border-brand-500/30 text-brand-300 px-4 py-2 rounded-full text-sm font-bold mb-6"
+            class="inline-flex items-center space-x-2 bg-brand-900/20 border border-brand-500/20 text-brand-300 px-4 py-2 rounded-full text-sm font-bold mb-6"
           >
             <span class="relative flex h-2 w-2">
               <span
@@ -251,75 +387,72 @@
                 class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"
               ></span>
             </span>
-            <span>Dominate Local Search in 2024</span>
+            <span>#1 Local SEO Agency</span>
           </div>
           <h1
             class="text-5xl lg:text-7xl font-extrabold text-white leading-[1.1] mb-8"
           >
             Turn Search Into <br /><span
               class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-purple-400"
-              >Revenue.</span
+              >Real Revenue.</span
             >
           </h1>
           <p
             class="text-lg lg:text-xl text-slate-400 mb-10 leading-relaxed max-w-lg"
           >
-            We build authority for US-based Home Services, Medical, and Legal
-            firms. No vanity metrics. Just real customers.
+            We dominate Google Maps for Home Services, Medical, and Legal firms.
+            Transparent subscription pricing. No vanity metrics.
           </p>
           <div class="flex flex-col sm:flex-row items-center gap-6">
             <button
-              onclick="scrollToAudit()"
-              class="w-full sm:w-auto bg-brand-600 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:bg-brand-500 hover:shadow-[0_0_30px_-5px_rgba(37,99,235,0.5)] transition-all transform hover:-translate-y-1 border border-brand-500"
+              onclick="openModal()"
+              class="w-full sm:w-auto bg-white text-dark-bg px-10 py-5 rounded-2xl font-bold text-lg hover:bg-slate-200 transition-all transform hover:-translate-y-1 shadow-lg shadow-white/10"
             >
-              Start Your Growth
+              Get Your Free Audit
             </button>
             <div class="flex items-center gap-4">
               <div class="flex -space-x-3">
                 <img
-                  class="w-12 h-12 rounded-full border-2 border-dark-bg object-cover grayscale opacity-80"
+                  class="w-12 h-12 rounded-full border-2 border-dark-bg object-cover grayscale opacity-70"
                   src="https://picsum.photos/seed/ceo1/100/100"
                   alt="Client"
                 />
                 <img
-                  class="w-12 h-12 rounded-full border-2 border-dark-bg object-cover grayscale opacity-80"
+                  class="w-12 h-12 rounded-full border-2 border-dark-bg object-cover grayscale opacity-70"
                   src="https://picsum.photos/seed/ceo2/100/100"
                   alt="Client"
                 />
                 <img
-                  class="w-12 h-12 rounded-full border-2 border-dark-bg object-cover grayscale opacity-80"
+                  class="w-12 h-12 rounded-full border-2 border-dark-bg object-cover grayscale opacity-70"
                   src="https://picsum.photos/seed/ceo3/100/100"
                   alt="Client"
                 />
               </div>
               <div class="text-sm font-semibold text-slate-300">
                 <div class="flex items-center text-yellow-400 text-xs mb-0.5">
-                  ★★★★★ <span class="text-slate-500 ml-1">(4.9/5)</span>
+                  ★★★★★ <span class="text-slate-600 ml-1">(4.9)</span>
                 </div>
-                <span class="text-slate-500">Trusted by 150+ US Firms</span>
+                <span class="text-slate-500">150+ US Clients</span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Hero Visual (Abstract Dashboard) -->
+        <!-- Hero Visual -->
         <div
           class="order-1 lg:order-2 relative flex justify-center lg:justify-end"
         >
           <div class="relative w-full max-w-lg aspect-square">
             <div
-              class="absolute inset-0 bg-gradient-to-tr from-brand-500/20 to-purple-500/20 rounded-full blur-3xl animate-pulse"
+              class="absolute inset-0 bg-gradient-to-tr from-brand-500/10 to-purple-500/10 rounded-full blur-3xl animate-pulse"
             ></div>
-
             <div
-              class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10/12 bg-dark-card/80 backdrop-blur-md p-3 rounded-[40px] shadow-2xl border border-white/10 z-10"
+              class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10/12 bg-dark-card/80 backdrop-blur-md p-3 rounded-[40px] shadow-2xl border border-white/5 z-10"
             >
               <div
                 class="bg-dark-bg rounded-[32px] overflow-hidden relative h-64 flex items-center justify-center border border-white/5"
               >
-                <!-- CSS Map Illustration -->
                 <div class="absolute inset-0 bg-grid-pattern opacity-20"></div>
-                <!-- Map Pin -->
                 <div class="relative z-10 group cursor-pointer">
                   <div
                     class="w-16 h-16 bg-gradient-to-br from-brand-500 to-purple-600 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.6)] text-white animate-bounce border-2 border-white/20"
@@ -336,19 +469,12 @@
                         stroke-width="2"
                         d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
                       ></path>
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                      ></path>
                     </svg>
                   </div>
                 </div>
               </div>
             </div>
-
-            <!-- Floating Stat Card -->
+            <!-- Floating Card -->
             <div
               class="absolute bottom-10 -left-4 lg:left-0 bg-dark-card border border-dark-border p-5 rounded-2xl shadow-xl z-20 animate-float"
             >
@@ -374,7 +500,7 @@
                   <p
                     class="text-xs text-slate-500 font-bold uppercase tracking-wider"
                   >
-                    Monthly Leads
+                    Leads
                   </p>
                   <p class="text-2xl font-extrabold text-white">+458%</p>
                 </div>
@@ -385,28 +511,71 @@
       </div>
     </section>
 
-    <!-- Services Section -->
+    <!-- 2. SOCIAL PROOF (Logos) -->
+    <section
+      class="py-10 border-y border-white/5 bg-dark-bg/50 backdrop-blur-sm"
+    >
+      <div class="max-w-7xl mx-auto px-6">
+        <p
+          class="text-center text-slate-500 text-sm font-semibold uppercase tracking-widest mb-8"
+        >
+          Trusted by top US Companies
+        </p>
+        <div
+          class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500"
+        >
+          <div class="text-slate-400 font-bold text-xl flex items-center gap-2">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z"
+              />
+            </svg>
+            BUILDER CORP
+          </div>
+          <div class="text-slate-400 font-bold text-xl flex items-center gap-2">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"
+              />
+            </svg>
+            LAW GROUP
+          </div>
+          <div class="text-slate-400 font-bold text-xl flex items-center gap-2">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+            </svg>
+            DENTAL PLUS
+          </div>
+          <div class="text-slate-400 font-bold text-xl flex items-center gap-2">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2L2 22h20L12 2zm0 3.5L18.5 20H5.5L12 5.5z" />
+            </svg>
+            MED USA
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. SERVICES SECTION -->
     <section id="services" class="py-24 px-6 relative">
       <div class="max-w-7xl mx-auto">
         <div class="text-center max-w-2xl mx-auto mb-16">
-          <h2 class="text-4xl font-extrabold text-white mb-4">
-            Core Expertise
-          </h2>
+          <h2 class="text-4xl font-extrabold text-white mb-4">Our Services</h2>
           <p class="text-slate-400 text-lg">
             Hyper-focused local optimization for real world results.
           </p>
         </div>
-        <div class="grid md:grid-cols-3 gap-6 auto-rows-[300px]">
+        <div class="grid md:grid-cols-3 gap-6 auto-rows-[280px]">
           <!-- Card 1 -->
           <div
-            class="card-hover bg-dark-card p-10 rounded-[32px] md:col-span-2 flex flex-col justify-between"
+            class="feature-card p-8 rounded-[32px] md:col-span-2 flex flex-col justify-between"
           >
             <div>
               <div
-                class="w-14 h-14 bg-brand-900/50 text-brand-400 rounded-2xl flex items-center justify-center mb-6 text-2xl border border-brand-500/20"
+                class="w-12 h-12 bg-brand-900/50 text-brand-400 rounded-xl flex items-center justify-center mb-6"
               >
                 <svg
-                  class="w-8 h-8"
+                  class="w-6 h-6"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -415,7 +584,7 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 00-.553-.894L15 7m0 13V7"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
                   ></path>
                 </svg>
               </div>
@@ -425,21 +594,21 @@
             </div>
             <p class="text-slate-400 text-lg">
               We optimize every signal—from photos to reviews—to ensure you sit
-              in the "Local Pack" Top 3 for profitable keywords.
+              in the "Local Pack" Top 3.
             </p>
           </div>
           <!-- Card 2 -->
           <div
-            class="card-hover bg-dark-card p-10 rounded-[32px] border border-brand-500/30 flex flex-col justify-center relative overflow-hidden group"
+            class="feature-card p-8 rounded-[32px] flex flex-col justify-center relative overflow-hidden group"
           >
             <div
               class="absolute inset-0 bg-brand-500/5 group-hover:bg-brand-500/10 transition"
             ></div>
             <div
-              class="w-14 h-14 bg-brand-600 text-white rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-lg shadow-brand-500/20"
+              class="w-12 h-12 bg-brand-600 text-white rounded-xl flex items-center justify-center mb-6"
             >
               <svg
-                class="w-8 h-8"
+                class="w-6 h-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -454,16 +623,92 @@
             </div>
             <h3 class="text-2xl font-bold mb-4 text-white">Local Citations</h3>
             <p class="text-slate-400">
-              Consistent NAP data across 100+ US directories to build absolute
-              trust.
+              Consistent NAP data across 100+ directories.
             </p>
           </div>
           <!-- Card 3 -->
           <div
-            class="card-hover bg-dark-card p-10 rounded-[32px] flex flex-col justify-center"
+            class="feature-card p-8 rounded-[32px] flex flex-col justify-center"
           >
             <div
-              class="w-14 h-14 bg-slate-800 text-slate-300 rounded-2xl flex items-center justify-center mb-6 text-2xl"
+              class="w-12 h-12 bg-slate-800 text-slate-300 rounded-xl flex items-center justify-center mb-6"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold mb-4 text-white">Lead Reporting</h3>
+            <p class="text-slate-400 text-md">
+              No vanity metrics. Just calls, directions, and visits.
+            </p>
+          </div>
+          <!-- Card 4 -->
+          <div
+            class="feature-card p-8 rounded-[32px] md:col-span-2 border border-white/5 flex items-center justify-between"
+          >
+            <div>
+              <div
+                class="w-12 h-12 bg-green-500/10 text-green-400 rounded-xl flex items-center justify-center mb-6"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold mb-4 text-white">
+                Review Management
+              </h3>
+              <p class="text-slate-400 text-lg">
+                Automated campaigns to turn happy customers into 5-star Google
+                reviews.
+              </p>
+            </div>
+            <div class="hidden sm:block">
+              <div class="flex gap-1 text-yellow-500 text-2xl">★★★★★</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. INDUSTRIES SECTION -->
+    <section
+      id="industries"
+      class="py-24 px-6 bg-dark-bg border-y border-white/5"
+    >
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-extrabold text-white mb-4">
+            Industries We Dominate
+          </h2>
+          <p class="text-slate-400 text-lg">
+            Specialized strategies for high-ticket verticals.
+          </p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <!-- Industry 1 -->
+          <div class="feature-card p-6 rounded-2xl text-center group">
+            <div
+              class="w-16 h-16 bg-orange-500/10 text-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition"
             >
               <svg
                 class="w-8 h-8"
@@ -475,130 +720,187 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                 ></path>
               </svg>
             </div>
-            <h3 class="text-2xl font-bold mb-4 text-white">Niche Strategies</h3>
-            <p class="text-slate-400 text-md">
-              Medical HIPAA compliance, Legal ethics, Home Services urgency.
-            </p>
+            <h3 class="font-bold text-white text-lg">Home Services</h3>
+            <p class="text-slate-500 text-sm mt-2">Plumbing, HVAC, Roofing</p>
           </div>
-          <!-- Card 4 -->
-          <div
-            class="card-hover bg-dark-card p-10 rounded-[32px] md:col-span-2 border border-white/5 flex items-center justify-between"
-          >
-            <div>
-              <div
-                class="w-14 h-14 bg-green-500/10 text-green-400 rounded-2xl flex items-center justify-center mb-6 text-2xl"
+          <!-- Industry 2 -->
+          <div class="feature-card p-6 rounded-2xl text-center group">
+            <div
+              class="w-16 h-16 bg-blue-500/10 text-blue-400 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition"
+            >
+              <svg
+                class="w-8 h-8"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                <svg
-                  class="w-8 h-8"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                  ></path>
-                </svg>
-              </div>
-              <h3 class="text-2xl font-bold mb-4 text-white">
-                Lead-First Reporting
-              </h3>
-              <p class="text-slate-400 text-lg">
-                You'll see exactly how many calls, direction requests, and
-                website visits we generated.
-              </p>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+                ></path>
+              </svg>
             </div>
-            <div class="hidden sm:block">
-              <!-- Mini Chart Graphic -->
-              <div class="flex items-end gap-1 h-16">
-                <div class="w-3 bg-slate-700 h-8 rounded-t"></div>
-                <div class="w-3 bg-slate-700 h-12 rounded-t"></div>
-                <div class="w-3 bg-slate-700 h-10 rounded-t"></div>
-                <div class="w-3 bg-slate-700 h-14 rounded-t"></div>
-                <div
-                  class="w-3 bg-brand-500 h-16 rounded-t relative shadow-[0_0_10px_rgba(59,130,246,0.8)]"
-                ></div>
-              </div>
+            <h3 class="font-bold text-white text-lg">Medical</h3>
+            <p class="text-slate-500 text-sm mt-2">Dentists, Clinics</p>
+          </div>
+          <!-- Industry 3 -->
+          <div class="feature-card p-6 rounded-2xl text-center group">
+            <div
+              class="w-16 h-16 bg-purple-500/10 text-purple-400 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition"
+            >
+              <svg
+                class="w-8 h-8"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
+                ></path>
+              </svg>
             </div>
+            <h3 class="font-bold text-white text-lg">Legal</h3>
+            <p class="text-slate-500 text-sm mt-2">Personal Injury, DUI</p>
+          </div>
+          <!-- Industry 4 -->
+          <div class="feature-card p-6 rounded-2xl text-center group">
+            <div
+              class="w-16 h-16 bg-pink-500/10 text-pink-400 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition"
+            >
+              <svg
+                class="w-8 h-8"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="font-bold text-white text-lg">Beauty</h3>
+            <p class="text-slate-500 text-sm mt-2">Spas, Salons</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PROCESS SECTION (REDESIGNED) -->
-    <section
-      id="process"
-      class="py-24 px-6 bg-dark-card border-y border-white/5 relative"
-    >
+    <!-- PRICING LOGIC SECTION (New) -->
+    <section id="pricing" class="py-24 px-6 relative overflow-hidden">
+      <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-600/5 rounded-full blur-[100px] pointer-events-none"
+      ></div>
+      <div class="max-w-4xl mx-auto text-center relative z-10">
+        <h2 class="text-4xl font-extrabold text-white mb-6">
+          Simple, Transparent Pricing
+        </h2>
+        <p class="text-slate-400 text-lg mb-12 max-w-2xl mx-auto">
+          We believe in earning your business every month. No long-term
+          contracts, no hidden setup fees.
+        </p>
+
+        <div class="grid md:grid-cols-3 gap-6 text-left">
+          <div class="feature-card p-8 rounded-2xl text-center">
+            <div class="text-brand-400 text-2xl mb-2">01</div>
+            <h3 class="text-xl font-bold text-white mb-2">Monthly Retainer</h3>
+            <p class="text-slate-500 text-sm">
+              Flat monthly fee. No surprises based on ad spend.
+            </p>
+          </div>
+          <div
+            class="feature-card p-8 rounded-2xl text-center border-brand-500/30"
+          >
+            <div class="text-brand-400 text-2xl mb-2">02</div>
+            <h3 class="text-xl font-bold text-white mb-2">Cancel Anytime</h3>
+            <p class="text-slate-500 text-sm">
+              If we don't perform, you aren't locked in.
+            </p>
+          </div>
+          <div class="feature-card p-8 rounded-2xl text-center">
+            <div class="text-brand-400 text-2xl mb-2">03</div>
+            <h3 class="text-xl font-bold text-white mb-2">ROI Focused</h3>
+            <p class="text-slate-500 text-sm">
+              We prioritize revenue over vanity rankings.
+            </p>
+          </div>
+        </div>
+        <button
+          onclick="openModal()"
+          class="mt-12 text-brand-400 font-bold hover:text-white transition flex items-center justify-center gap-2 mx-auto"
+        >
+          Get a Custom Quote
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17 8l4 4m0 0l-4 4m4-4H3"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- 5. HOW IT WORKS (Timeline) -->
+    <section id="how-it-works" class="py-24 px-6 relative">
       <div class="max-w-7xl mx-auto">
-        <div class="mb-20">
-          <h2 class="text-4xl font-extrabold text-white mb-4 text-center">
-            Our Proven Process
-          </h2>
-          <p class="text-slate-400 text-lg text-center max-w-2xl mx-auto">
-            A systematic approach to dominate your local market.
+        <div class="mb-20 text-center">
+          <h2 class="text-4xl font-extrabold text-white mb-4">How It Works</h2>
+          <p class="text-slate-400 text-lg">
+            Our systematic approach to ranking.
           </p>
         </div>
 
         <!-- Desktop Timeline -->
         <div class="hidden md:block relative">
-          <!-- The Connector Line -->
           <div class="process-line-desktop"></div>
-
           <div class="grid grid-cols-4 gap-0 relative z-10">
             <!-- Step 1 -->
             <div class="flex flex-col items-center group text-center px-4">
               <div
-                class="w-12 h-12 bg-dark-card border-4 border-brand-500 rounded-full flex items-center justify-center font-bold text-xl text-white shadow-[0_0_20px_rgba(59,130,246,0.5)] mb-6 transition-transform group-hover:scale-110"
+                class="w-12 h-12 bg-dark-bg border-4 border-brand-500 rounded-full flex items-center justify-center font-bold text-xl text-white shadow-[0_0_20px_rgba(59,130,246,0.5)] mb-6 transition-transform group-hover:scale-110"
               >
                 1
               </div>
-              <h3
-                class="text-xl font-bold mb-2 text-slate-200 group-hover:text-brand-400 transition"
-              >
-                Deep Audit
-              </h3>
-              <p class="text-slate-500 text-sm">
-                We analyze your footprint and competitors.
-              </p>
+              <h3 class="text-xl font-bold mb-2 text-slate-200">Audit</h3>
+              <p class="text-slate-500 text-sm">Analyze competitors.</p>
             </div>
             <!-- Step 2 -->
             <div class="flex flex-col items-center group text-center px-4">
               <div
-                class="w-12 h-12 bg-dark-card border-4 border-slate-700 rounded-full flex items-center justify-center font-bold text-xl text-slate-300 mb-6 transition-all group-hover:border-brand-500 group-hover:text-white group-hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]"
+                class="w-12 h-12 bg-dark-bg border-4 border-slate-700 rounded-full flex items-center justify-center font-bold text-xl text-slate-300 mb-6 transition-all group-hover:border-brand-500 group-hover:text-white group-hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]"
               >
                 2
               </div>
-              <h3
-                class="text-xl font-bold mb-2 text-slate-200 group-hover:text-brand-400 transition"
-              >
-                Optimization
-              </h3>
-              <p class="text-slate-500 text-sm">
-                Fixes, GBP optimization, and citations.
-              </p>
+              <h3 class="text-xl font-bold mb-2 text-slate-200">Optimize</h3>
+              <p class="text-slate-500 text-sm">Fix signals & citations.</p>
             </div>
             <!-- Step 3 -->
             <div class="flex flex-col items-center group text-center px-4">
               <div
-                class="w-12 h-12 bg-dark-card border-4 border-slate-700 rounded-full flex items-center justify-center font-bold text-xl text-slate-300 mb-6 transition-all group-hover:border-brand-500 group-hover:text-white group-hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]"
+                class="w-12 h-12 bg-dark-bg border-4 border-slate-700 rounded-full flex items-center justify-center font-bold text-xl text-slate-300 mb-6 transition-all group-hover:border-brand-500 group-hover:text-white group-hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]"
               >
                 3
               </div>
-              <h3
-                class="text-xl font-bold mb-2 text-slate-200 group-hover:text-brand-400 transition"
-              >
-                Authority
-              </h3>
-              <p class="text-slate-500 text-sm">
-                Building links and generating reviews.
-              </p>
+              <h3 class="text-xl font-bold mb-2 text-slate-200">Authority</h3>
+              <p class="text-slate-500 text-sm">Links & reviews.</p>
             </div>
             <!-- Step 4 -->
             <div class="flex flex-col items-center group text-center px-4">
@@ -608,59 +910,48 @@
                 4
               </div>
               <h3 class="text-xl font-bold mb-2 text-brand-400">Scale</h3>
-              <p class="text-slate-500 text-sm">
-                Watch your revenue grow sustainably.
-              </p>
+              <p class="text-slate-500 text-sm">Revenue growth.</p>
             </div>
           </div>
         </div>
 
         <!-- Mobile Timeline -->
         <div class="md:hidden relative max-w-sm mx-auto pl-6">
-          <!-- The Connector Line -->
           <div class="process-line-mobile"></div>
-
           <div class="space-y-12 relative z-10">
-            <!-- Mobile Step 1 -->
             <div class="relative group">
               <div
-                class="absolute -left-[38px] top-0 w-10 h-10 bg-dark-card border-4 border-brand-500 rounded-full flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+                class="absolute -left-[38px] top-0 w-10 h-10 bg-dark-bg border-4 border-brand-500 rounded-full flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]"
               >
                 1
               </div>
-              <h3 class="text-lg font-bold mb-2 text-white">Deep Audit</h3>
+              <h3 class="text-lg font-bold mb-2 text-white">Audit</h3>
               <p class="text-slate-500 text-sm">
-                We analyze your current footprint and competitors to find the
-                "low hanging fruit".
+                We analyze your current footprint.
               </p>
             </div>
-            <!-- Mobile Step 2 -->
             <div class="relative group">
               <div
-                class="absolute -left-[38px] top-0 w-10 h-10 bg-dark-card border-4 border-slate-700 rounded-full flex items-center justify-center font-bold text-slate-300 group-hover:border-brand-500 group-hover:text-white transition-colors"
+                class="absolute -left-[38px] top-0 w-10 h-10 bg-dark-bg border-4 border-slate-700 rounded-full flex items-center justify-center font-bold text-slate-300 group-hover:border-brand-500 group-hover:text-white"
               >
                 2
               </div>
-              <h3 class="text-lg font-bold mb-2 text-white">Optimization</h3>
+              <h3 class="text-lg font-bold mb-2 text-white">Optimize</h3>
               <p class="text-slate-500 text-sm">
-                On-page fixes, GBP optimization, and citation cleanup to align
-                the signals.
+                On-page fixes and citation cleanup.
               </p>
             </div>
-            <!-- Mobile Step 3 -->
             <div class="relative group">
               <div
-                class="absolute -left-[38px] top-0 w-10 h-10 bg-dark-card border-4 border-slate-700 rounded-full flex items-center justify-center font-bold text-slate-300 group-hover:border-brand-500 group-hover:text-white transition-colors"
+                class="absolute -left-[38px] top-0 w-10 h-10 bg-dark-bg border-4 border-slate-700 rounded-full flex items-center justify-center font-bold text-slate-300 group-hover:border-brand-500 group-hover:text-white"
               >
                 3
               </div>
               <h3 class="text-lg font-bold mb-2 text-white">Authority</h3>
               <p class="text-slate-500 text-sm">
-                Building local links and generating genuine reviews to boost
-                trust.
+                Building local links and reviews.
               </p>
             </div>
-            <!-- Mobile Step 4 -->
             <div class="relative group">
               <div
                 class="absolute -left-[38px] top-0 w-10 h-10 bg-gradient-to-br from-brand-500 to-purple-600 rounded-full flex items-center justify-center font-bold text-white shadow-lg"
@@ -668,298 +959,166 @@
                 4
               </div>
               <h3 class="text-lg font-bold mb-2 text-brand-400">Scale</h3>
-              <p class="text-slate-500 text-sm">
-                Sit back, answer the phone, and watch your revenue grow.
-              </p>
+              <p class="text-slate-500 text-sm">Watch your revenue grow.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Results Section -->
-    <section id="results" class="py-24 px-6">
+    <!-- 6. CASE STUDY SECTION -->
+    <section
+      id="case-study"
+      class="py-24 px-6 bg-dark-card border-y border-white/5"
+    >
       <div class="max-w-7xl mx-auto">
-        <h2 class="text-4xl font-extrabold text-white mb-12 text-center">
-          Recent Results
-        </h2>
-        <div class="grid md:grid-cols-3 gap-8">
-          <!-- Testimonial 1 -->
-          <div
-            class="p-8 rounded-3xl bg-dark-card border border-dark-border hover:border-brand-500/50 transition group"
-          >
-            <div class="flex items-center gap-4 mb-6">
-              <img
-                src="https://picsum.photos/seed/law/60/60"
-                class="rounded-full w-14 h-14 object-cover border border-slate-700 grayscale group-hover:grayscale-0 transition"
-                alt="Lawyer"
-              />
+        <div class="flex flex-col lg:flex-row gap-16 items-center">
+          <!-- Text Content -->
+          <div class="lg:w-1/2">
+            <div
+              class="inline-block bg-orange-500/10 text-orange-400 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4"
+            >
+              Featured Case Study
+            </div>
+            <h2 class="text-4xl font-extrabold text-white mb-6">
+              Scaling an HVAC Company to $50k Monthly Revenue
+            </h2>
+            <p class="text-slate-400 text-lg mb-8 leading-relaxed">
+              Ross HVAC Services was struggling to rank on page 3 for local
+              keywords. In just 90 days, we implemented our citation strategy
+              and review automation, resulting in a massive influx of service
+              calls.
+            </p>
+
+            <div class="grid grid-cols-2 gap-8 mb-8">
               <div>
-                <p class="font-bold text-white">James Carter</p>
-                <p class="text-sm text-slate-500">Carter Law Firm</p>
+                <p class="text-slate-500 text-sm mb-1">Monthly Leads</p>
+                <p class="text-3xl font-bold text-white">+450%</p>
+              </div>
+              <div>
+                <p class="text-slate-500 text-sm mb-1">Map Pack Rank</p>
+                <p class="text-3xl font-bold text-white">#1 to #1</p>
               </div>
             </div>
-            <p class="text-slate-400 mb-6">
-              "Within 3 months, we went from page 3 to the top 3 for 'Personal
-              Injury Attorney'. The phone hasn't stopped ringing."
-            </p>
-            <div class="text-green-400 font-bold flex items-center gap-2">
-              <svg
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                ></path>
-              </svg>
-              210% Increase in Calls
-            </div>
-          </div>
-          <!-- Testimonial 2 -->
-          <div
-            class="p-8 rounded-3xl bg-dark-card border border-dark-border hover:border-brand-500/50 transition group"
-          >
-            <div class="flex items-center gap-4 mb-6">
+
+            <div class="flex items-center gap-4">
               <img
-                src="https://picsum.photos/seed/dent/60/60"
-                class="rounded-full w-14 h-14 object-cover border border-slate-700 grayscale group-hover:grayscale-0 transition"
-                alt="Dentist"
-              />
-              <div>
-                <p class="font-bold text-white">Dr. Sarah Lee</p>
-                <p class="text-sm text-slate-500">Bright Smile Dental</p>
-              </div>
-            </div>
-            <p class="text-slate-400 mb-6">
-              "LocalSEOPro understood that we needed HIPAA-compliant strategies.
-              They filled our appointment book completely."
-            </p>
-            <div class="text-green-400 font-bold flex items-center gap-2">
-              <svg
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                ></path>
-              </svg>
-              95% Capacity Reached
-            </div>
-          </div>
-          <!-- Testimonial 3 -->
-          <div
-            class="p-8 rounded-3xl bg-dark-card border border-dark-border hover:border-brand-500/50 transition group"
-          >
-            <div class="flex items-center gap-4 mb-6">
-              <img
-                src="https://picsum.photos/seed/hvac/60/60"
-                class="rounded-full w-14 h-14 object-cover border border-slate-700 grayscale group-hover:grayscale-0 transition"
-                alt="HVAC"
+                src="https://picsum.photos/seed/hvac/50/50"
+                class="rounded-full w-12 h-12 border border-slate-700"
+                alt="Client"
               />
               <div>
                 <p class="font-bold text-white">Mike Ross</p>
-                <p class="text-sm text-slate-500">Ross HVAC Services</p>
+                <p class="text-sm text-slate-500">Owner, Ross HVAC</p>
               </div>
             </div>
-            <p class="text-slate-400 mb-6">
-              "Finally an SEO agency that focuses on ROI. My map leads are
-              through the roof."
-            </p>
-            <div class="text-green-400 font-bold flex items-center gap-2">
-              <svg
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                ></path>
-              </svg>
-              $50k Revenue Added
+          </div>
+
+          <!-- Visual Graph -->
+          <div class="lg:w-1/2 w-full">
+            <div class="feature-card rounded-3xl p-8 relative overflow-hidden">
+              <h3 class="text-lg font-bold text-slate-300 mb-8">
+                Organic Traffic Growth
+              </h3>
+
+              <!-- CSS Graph -->
+              <div class="h-64 flex items-end justify-between gap-2">
+                <div
+                  class="w-full bg-slate-700/30 rounded-t-sm h-[10%] hover:bg-brand-500/50 transition duration-300"
+                ></div>
+                <div
+                  class="w-full bg-slate-700/30 rounded-t-sm h-[15%] hover:bg-brand-500/50 transition duration-300"
+                ></div>
+                <div
+                  class="w-full bg-slate-700/30 rounded-t-sm h-[20%] hover:bg-brand-500/50 transition duration-300"
+                ></div>
+                <div
+                  class="w-full bg-slate-700/30 rounded-t-sm h-[25%] hover:bg-brand-500/50 transition duration-300"
+                ></div>
+                <div
+                  class="w-full bg-slate-700/30 rounded-t-sm h-[35%] hover:bg-brand-500/50 transition duration-300"
+                ></div>
+                <div
+                  class="w-full bg-slate-700/30 rounded-t-sm h-[40%] hover:bg-brand-500/50 transition duration-300"
+                ></div>
+                <div
+                  class="w-full bg-slate-700/30 rounded-t-sm h-[45%] hover:bg-brand-500/50 transition duration-300"
+                ></div>
+                <div
+                  class="w-full bg-brand-500 rounded-t-sm h-[95%] shadow-[0_0_20px_rgba(59,130,246,0.5)] relative"
+                >
+                  <div
+                    class="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-dark-bg px-3 py-1 rounded text-xs font-bold"
+                  >
+                    Result
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-between text-xs text-slate-500 mt-4">
+                <span>Month 1</span>
+                <span>Month 3</span>
+                <span>Month 6</span>
+                <span>Month 9</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- CTA Section -->
-    <section id="audit" class="py-20 px-6">
+    <!-- 7. FINAL CTA -->
+    <section id="audit" class="py-32 px-6 relative overflow-hidden">
+      <!-- BG Glow -->
       <div
-        class="max-w-5xl mx-auto bg-gradient-to-br from-slate-900 to-black border border-white/10 rounded-[50px] p-8 md:p-16 text-center text-white relative overflow-hidden"
-      >
-        <!-- Background Elements -->
-        <div
-          class="absolute top-0 left-0 w-64 h-64 bg-brand-600 rounded-full mix-blend-overlay filter blur-[100px] opacity-20 -translate-x-1/2 -translate-y-1/2"
-        ></div>
-        <div
-          class="absolute bottom-0 right-0 w-64 h-64 bg-purple-600 rounded-full mix-blend-overlay filter blur-[100px] opacity-20 translate-x-1/2 translate-y-1/2"
-        ></div>
+        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-600 rounded-full blur-[150px] opacity-10 pointer-events-none"
+      ></div>
 
-        <div class="relative z-10">
-          <h2 class="text-4xl md:text-5xl font-extrabold mb-6">
-            Ready to Own Your Market?
-          </h2>
-          <p class="text-xl text-slate-400 mb-10 max-w-2xl mx-auto">
-            No long-term contracts. Just pure growth for your US-based business.
-          </p>
-
-          <form
-            id="audit-form"
-            class="flex flex-col md:flex-row justify-center items-center gap-4 max-w-xl mx-auto"
+      <div class="max-w-4xl mx-auto text-center relative z-10">
+        <h2
+          class="text-5xl md:text-6xl font-extrabold text-white mb-8 leading-tight"
+        >
+          Ready to Dominate <br /><span class="text-brand-500"
+            >Your Market?</span
           >
-            <input
-              type="url"
-              placeholder="www.yourwebsite.com"
-              required
-              class="px-6 py-4 rounded-2xl w-full bg-dark-card border border-dark-border text-white font-medium focus:ring-4 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition placeholder-slate-600"
-            />
-            <button
-              type="submit"
-              class="bg-gradient-to-r from-brand-600 to-purple-600 hover:from-brand-500 hover:to-purple-500 text-white px-8 py-4 rounded-2xl font-bold text-lg w-full md:w-auto transition-all shadow-lg hover:shadow-brand-500/25 whitespace-nowrap"
-            >
-              Get Free Audit
-            </button>
-          </form>
-          <p class="mt-4 text-sm text-slate-500">
-            No credit card required for the audit.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section id="faq" class="py-24 px-6">
-      <div class="max-w-3xl mx-auto">
-        <h2 class="text-3xl font-extrabold text-white mb-10 text-center">
-          Frequently Asked Questions
         </h2>
-        <div class="space-y-4">
-          <details
-            class="group bg-dark-card p-6 rounded-2xl cursor-pointer border border-dark-border open:border-brand-500/50 transition-all"
-          >
-            <summary
-              class="flex justify-between items-center font-semibold text-lg list-none text-slate-200"
-            >
-              How long does it take to see results?
-              <span class="transition group-open:rotate-180 text-slate-500">
-                <svg
-                  fill="none"
-                  height="24"
-                  shape-rendering="geometricPrecision"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  width="24"
-                >
-                  <path d="M6 9l6 6 6-6"></path>
-                </svg>
-              </span>
-            </summary>
-            <p class="text-slate-400 mt-4 leading-relaxed">
-              Local SEO typically shows initial results in 30-60 days, with
-              significant ranking improvements and lead growth occurring around
-              the 3-month mark.
-            </p>
-          </details>
-          <details
-            class="group bg-dark-card p-6 rounded-2xl cursor-pointer border border-dark-border open:border-brand-500/50 transition-all"
-          >
-            <summary
-              class="flex justify-between items-center font-semibold text-lg list-none text-slate-200"
-            >
-              Do you work with small businesses?
-              <span class="transition group-open:rotate-180 text-slate-500">
-                <svg
-                  fill="none"
-                  height="24"
-                  shape-rendering="geometricPrecision"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  width="24"
-                >
-                  <path d="M6 9l6 6 6-6"></path>
-                </svg>
-              </span>
-            </summary>
-            <p class="text-slate-400 mt-4 leading-relaxed">
-              Yes! We specialize in US-based home service providers (plumbers,
-              electricians, dentists, lawyers) looking to grow their local
-              footprint.
-            </p>
-          </details>
-          <details
-            class="group bg-dark-card p-6 rounded-2xl cursor-pointer border border-dark-border open:border-brand-500/50 transition-all"
-          >
-            <summary
-              class="flex justify-between items-center font-semibold text-lg list-none text-slate-200"
-            >
-              Are there long-term contracts?
-              <span class="transition group-open:rotate-180 text-slate-500">
-                <svg
-                  fill="none"
-                  height="24"
-                  shape-rendering="geometricPrecision"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  width="24"
-                >
-                  <path d="M6 9l6 6 6-6"></path>
-                </svg>
-              </span>
-            </summary>
-            <p class="text-slate-400 mt-4 leading-relaxed">
-              No. We earn your business every month. Our agreements are
-              month-to-month because we believe in our results.
-            </p>
-          </details>
-        </div>
+        <p class="text-xl text-slate-400 mb-12 max-w-2xl mx-auto">
+          Join 150+ businesses getting more phone calls and booking more jobs.
+          No long-term contracts.
+        </p>
+
+        <button
+          onclick="openModal()"
+          class="bg-white text-dark-bg px-12 py-5 rounded-2xl font-bold text-xl hover:bg-slate-200 transition-all shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+        >
+          Get Free Audit
+        </button>
+        <p class="mt-6 text-sm text-slate-600">
+          No credit card required. Immediate response.
+        </p>
       </div>
     </section>
 
     <!-- Footer -->
-    <footer class="border-t border-white/5 pt-16 pb-8 bg-black">
+    <footer class="bg-black border-t border-white/10 pt-16 pb-8">
       <div class="max-w-7xl mx-auto px-6">
         <div
-          class="flex flex-col md:flex-row justify-between items-center mb-8"
+          class="flex flex-col md:flex-row justify-between items-center mb-12"
         >
-          <div class="mb-4 md:mb-0">
+          <div class="mb-6 md:mb-0">
             <span class="text-2xl font-extrabold text-white tracking-tight"
               >LocalSEOPro.</span
             >
+            <p class="text-slate-600 text-sm mt-2">
+              Revenue-driven local SEO for US businesses.
+            </p>
           </div>
-          <div class="flex space-x-6 text-slate-500">
-            <a href="#" class="hover:text-brand-400 transition"
-              >Privacy Policy</a
-            >
-            <a href="#" class="hover:text-brand-400 transition"
-              >Terms of Service</a
-            >
-            <a href="#" class="hover:text-brand-400 transition">Contact</a>
+          <div class="flex space-x-8 text-sm font-semibold text-slate-400">
+            <a href="#" class="hover:text-white transition">Privacy</a>
+            <a href="#" class="hover:text-white transition">Terms</a>
+            <a href="#" class="hover:text-white transition">Contact</a>
           </div>
         </div>
-        <div class="text-center text-slate-600 text-sm">
+        <div class="text-center text-slate-700 text-xs">
           <p>© 2026 LocalSEOPro.com. All rights reserved.</p>
         </div>
       </div>
@@ -967,58 +1126,64 @@
 
     <!-- Scripts -->
     <script>
-      // Mobile Menu
-      const btn = document.getElementById("mobile-menu-btn");
-      const menu = document.getElementById("mobile-menu");
-      const links = menu.querySelectorAll("a");
+      // Modal Logic
+      const modal = document.getElementById("modal-overlay");
 
-      btn.addEventListener("click", () => {
-        menu.classList.toggle("hidden");
-      });
+      function openModal() {
+        modal.classList.remove("hidden");
+      }
 
-      links.forEach((link) => {
-        link.addEventListener("click", () => {
-          menu.classList.add("hidden");
-        });
-      });
+      function closeModal() {
+        modal.classList.add("hidden");
+      }
 
-      // Sticky Navbar
-      const navbar = document.getElementById("navbar");
-      window.addEventListener("scroll", () => {
-        if (window.scrollY > 20) {
-          navbar.classList.add("nav-scrolled");
-        } else {
-          navbar.classList.remove("nav-scrolled");
+      // Close modal on Escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+          closeModal();
         }
       });
 
-      // Form Handling
-      const form = document.getElementById("audit-form");
+      // Mobile Menu
+      const btn = document.getElementById("mobile-menu-btn");
+      const menu = document.getElementById("mobile-menu");
+      const navbar = document.getElementById("navbar");
+
+      btn.addEventListener("click", () => menu.classList.toggle("hidden"));
+      menu.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => menu.classList.add("hidden"));
+      });
+
+      // Sticky Nav
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 20) navbar.classList.add("nav-scrolled");
+        else navbar.classList.remove("nav-scrolled");
+      });
+
+      // Forms (Scroll Form + Modal Form)
+      const scrollForm = document.getElementById("audit-form");
+      const modalForm = document.getElementById("modal-form");
       const toast = document.getElementById("toast");
 
-      form.addEventListener("submit", (e) => {
+      function handleFormSubmit(e, btn) {
         e.preventDefault();
-        const btn = form.querySelector("button");
         const originalText = btn.innerText;
-
-        btn.innerText = "Analyzing...";
+        btn.innerText = "Sending...";
         btn.classList.add("opacity-75", "cursor-not-allowed");
 
         setTimeout(() => {
           btn.innerText = originalText;
           btn.classList.remove("opacity-75", "cursor-not-allowed");
-          form.reset();
-
+          e.target.reset();
+          closeModal(); // Close modal if it was open
           toast.classList.remove("translate-x-full");
-          setTimeout(() => {
-            toast.classList.add("translate-x-full");
-          }, 4000);
+          setTimeout(() => toast.classList.add("translate-x-full"), 4000);
         }, 1500);
-      });
-
-      function scrollToAudit() {
-        document.getElementById("audit").scrollIntoView({ behavior: "smooth" });
       }
+
+      modalForm.addEventListener("submit", (e) =>
+        handleFormSubmit(e, modalForm.querySelector("button")),
+      );
     </script>
   </body>
 </html>
